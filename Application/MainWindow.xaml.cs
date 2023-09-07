@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataLoggerArduino.Infrastructure.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,7 @@ namespace DataLoggerArduino
     {
         public MainWindow()
         {
+            SerialCommunications.AutodetectArduinoPort();
             InitializeComponent();
         }
     }
