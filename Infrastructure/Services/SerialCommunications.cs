@@ -8,17 +8,29 @@ using System.Windows;
 namespace DataLoggerArduino.Infrastructure.Services
 {
     public class SerialCommunications
-    {
-        SerialPort serialPort = new SerialPort();
-        
-        public static List<string> properties = new List<string>();
-
+    {   
         private SerialCommunications()
         {
-            serialPort.PortName = "COM3";
-            serialPort.BaudRate = 9600;
-            serialPort.Open();
+            
         }
+
+        public static SerialPort? ConnectArduino(string comPort, int baudRate)
+        {
+            try
+            {
+                SerialPort serialPort = new SerialPort();
+                serialPort.PortName = comPort;
+                serialPort.BaudRate = baudRate;
+                serialPort.Open();                
+                return serialPort;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+
         public static List<ArduinoDevices> AutodetectArduinoPort()
         {
             List<ArduinoDevices> arduinoDevices = new List<ArduinoDevices>();

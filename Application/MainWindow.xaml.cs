@@ -1,6 +1,7 @@
 ﻿using DataLoggerArduino.Domain.Entities;
 using DataLoggerArduino.Infrastructure.Services;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 
 namespace DataLoggerArduino
@@ -12,6 +13,21 @@ namespace DataLoggerArduino
         {
             _ArduinoDevicesConnected = SerialCommunications.AutodetectArduinoPort();
             InitializeComponent();
+            DeviceModelsPorts.ItemsSource = Devices();
+            
         }
+
+        private IEnumerable<string> Devices()
+        {
+            List<string> deviceNames = new List<string>();
+            foreach(var device in _ArduinoDevicesConnected)
+            {
+                deviceNames.Add(device.name);
+            }
+            IEnumerable<string> devices = deviceNames;
+            return devices;
+        }
+
+
     }
 }

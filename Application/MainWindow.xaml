@@ -5,8 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DataLoggerArduino"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Arduino Data Logger" Height="450" Width="800">
     <Grid>
+        <ComboBox x:Name="DeviceModelsPorts" HorizontalAlignment="Left" Margin="74,16,0,0" VerticalAlignment="Top" Width="245"/>
+        
+        <ComboBox x:Name="BaudRates" HorizontalAlignment="Left" Margin="324,16,0,0" VerticalAlignment="Top" Width="120"/>
+        <Button Content="Conectar" HorizontalAlignment="Left" Margin="449,18,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.311,-0.098" Width="76"/>
+        <Label Content="Dispositivo: " HorizontalAlignment="Left" Margin="0,12,0,0" VerticalAlignment="Top"/>
+        
+
 
     </Grid>
 </Window>
