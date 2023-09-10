@@ -5,13 +5,17 @@ using System.Windows.Controls;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System;
+using System.IO.Ports;
+using System.Text.RegularExpressions;
 
 namespace DataLoggerArduino
 {
     public partial class MainWindow : Window
     {
         public static List<ArduinoDevices> _ArduinoDevicesConnected = new List<ArduinoDevices>();
-        //public static List<string[]>  
+        public static string selectedDevice = string.Empty;
+        public static string selectedBaudRate = string.Empty;
         public MainWindow()
         {
             _ArduinoDevicesConnected = SerialCommunications.AutodetectArduinoPort();
@@ -51,11 +55,30 @@ namespace DataLoggerArduino
 
         private void SaveConnectionParameters(object sender, SelectionChangedEventArgs e)
         {
-
+            
+            if (DeviceModelsPorts.SelectedItem != null)
+            {
+                selectedDevice = DeviceModelsPorts.SelectedItem.ToString();
+            }
+            if (BaudRates.SelectedItem != null)
+            {
+                if(Enum.TryParse(BaudRates.SelectedItem.ToString(), out BaudRatesEnum br))
+                {
+                    selectedBaudRate = br.ToString();
+                }                
+            }                        
         }
         private void OnClickConnectDevice(object sender, RoutedEventArgs e)
         {
-           
+            ArduinoDevices arduinoSelected = _ArduinoDevicesConnected.FirstOrDefault(x => x.name == selectedDevice);
+
+            SerialPort? serialPort = SerialCommunications.ConnectArduino(arduinoSelected.deviceId, Convert.ToInt32(Regex.Replace(selectedBaudRate, "[^0-9]","")));
+            if(serialPort != null)
+            {
+                DeviceModelsPorts.IsEnabled = false;
+                BaudRates.IsEnabled = false;
+                ConnectDevice.Content = "Conectado";
+            }
         }
     }
 }
