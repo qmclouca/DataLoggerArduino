@@ -16,12 +16,12 @@ namespace DataLoggerArduino
         public static List<ArduinoDevices> _ArduinoDevicesConnected = new List<ArduinoDevices>();
         public static string selectedDevice = string.Empty;
         public static string selectedBaudRate = string.Empty;
+        public static SerialPort serialPort = null;
         public MainWindow()
         {
             _ArduinoDevicesConnected = SerialCommunications.AutodetectArduinoPort();
             InitializeComponent();
-            DeviceModelsPorts.ItemsSource = Devices();
-            
+            DeviceModelsPorts.ItemsSource = Devices();           
         }
 
         private IEnumerable<string> Devices()
@@ -68,16 +68,27 @@ namespace DataLoggerArduino
                 }                
             }                        
         }
+        private string ReadIncomeDataDevice(SerialPort serialPort)
+        {
+            string actualData = SerialCommunications.ReadData(serialPort);
+            return actualData;
+        }
         private void OnClickConnectDevice(object sender, RoutedEventArgs e)
         {
             ArduinoDevices arduinoSelected = _ArduinoDevicesConnected.FirstOrDefault(x => x.name == selectedDevice);
 
-            SerialPort? serialPort = SerialCommunications.ConnectArduino(arduinoSelected.deviceId, Convert.ToInt32(Regex.Replace(selectedBaudRate, "[^0-9]","")));
-            if(serialPort != null)
+            serialPort = SerialCommunications.ConnectArduino(arduinoSelected.deviceId, Convert.ToInt32(Regex.Replace(selectedBaudRate, "[^0-9]","")));
+            DeviceModelsPorts.IsEnabled = false;
+            BaudRates.IsEnabled = false;
+            ConnectDevice.Content = "Conectado";            
+        }       
+
+        private void Monitor(object sender, RoutedEventArgs e)
+        {
+            while (true)
             {
-                DeviceModelsPorts.IsEnabled = false;
-                BaudRates.IsEnabled = false;
-                ConnectDevice.Content = "Conectado";
+                string input = ReadIncomeDataDevice(serialPort);
+                if (serialPort != null) IncomeData.Text = IncomeData.Text + "/n" + input;
             }
         }
     }
