@@ -90,5 +90,11 @@ namespace DataLoggerArduino.Infrastructure.Services
             }
             return arduinoDevices;
         }
+
+        public static string ReadData(SerialPort serialPort)
+        {
+            string data = serialPort.ReadLine();
+            return data;
+        }
     }
 }
