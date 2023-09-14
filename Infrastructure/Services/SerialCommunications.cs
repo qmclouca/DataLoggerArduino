@@ -93,8 +93,13 @@ namespace DataLoggerArduino.Infrastructure.Services
 
         public static string ReadData(SerialPort serialPort)
         {
-            string data = serialPort.ReadLine();
-            return data;
+            if(serialPort != null)
+            {
+                string data = serialPort.ReadLine();
+                return data;
+            }
+            return string.Empty;
+            
         }
     }
 }

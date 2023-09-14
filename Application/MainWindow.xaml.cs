@@ -8,6 +8,7 @@ using System.Windows;
 using System;
 using System.IO.Ports;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace DataLoggerArduino
 {
@@ -71,7 +72,7 @@ namespace DataLoggerArduino
         private string ReadIncomeDataDevice(SerialPort serialPort)
         {
             string actualData = SerialCommunications.ReadData(serialPort);
-            return actualData;
+            return actualData;            
         }
         private void OnClickConnectDevice(object sender, RoutedEventArgs e)
         {
@@ -80,16 +81,29 @@ namespace DataLoggerArduino
             serialPort = SerialCommunications.ConnectArduino(arduinoSelected.deviceId, Convert.ToInt32(Regex.Replace(selectedBaudRate, "[^0-9]","")));
             DeviceModelsPorts.IsEnabled = false;
             BaudRates.IsEnabled = false;
-            ConnectDevice.Content = "Conectado";            
-        }       
+            ConnectDevice.Content = "Conectado";
+            ConnectDevice.IsEnabled = false;
+            Monitorar.IsEnabled = true;
+        }
+              
 
-        private void Monitor(object sender, RoutedEventArgs e)
+        private async void Monitor(object sender, RoutedEventArgs e)
         {
-            while (true)
+            await Task.Run(() =>
             {
-                string input = ReadIncomeDataDevice(serialPort);
-                if (serialPort != null) IncomeData.Text = IncomeData.Text + "/n" + input;
-            }
+                while (true)  // Cuidado com loops infinitos, pode ser uma boa ideia adicionar uma condição de saída.
+                {
+                    string input = ReadIncomeDataDevice(serialPort);
+                    if (serialPort != null)
+                    {
+                        this.Dispatcher.Invoke(() =>
+                        {
+                            IncomeData.Text = IncomeData.Text + "\n" + input;  // Use \n ao invés de /n para nova linha
+                        });
+                    }   
+                    Task.Delay(500).Wait();  // Dá uma pequena pausa para não sobrecarregar a CPU.
+                }
+            });
         }
     }
 }
