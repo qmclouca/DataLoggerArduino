@@ -93,36 +93,7 @@ namespace DataLoggerArduino
               
 
         private async void Monitor(object sender, RoutedEventArgs e)
-        {
-            var pointGeometry = new MeshGeometry3D();
-            // Adicione o ponto ao pointGeometry aqui
-            // (Você provavelmente vai querer representar o ponto com uma esfera ou outro volume para ser visível)
-            pointGeometry.Positions.Add(new Point3D(0, 0, 0));
-            pointGeometry.Positions.Add(new Point3D(1, 0, 0));
-            pointGeometry.Positions.Add(new Point3D(0, 1, 0));
-            pointGeometry.Positions.Add(new Point3D(0, 0, 1));
-
-            pointGeometry.TriangleIndices.Add(0);
-            pointGeometry.TriangleIndices.Add(1);
-            pointGeometry.TriangleIndices.Add(2);
-
-            pointGeometry.TriangleIndices.Add(0);
-            pointGeometry.TriangleIndices.Add(1);
-            pointGeometry.TriangleIndices.Add(3);
-
-            pointGeometry.TriangleIndices.Add(0);
-            pointGeometry.TriangleIndices.Add(2);
-            pointGeometry.TriangleIndices.Add(3);
-
-            pointGeometry.TriangleIndices.Add(1);
-            pointGeometry.TriangleIndices.Add(2);
-            pointGeometry.TriangleIndices.Add(3);
-
-            var material = new DiffuseMaterial(Brushes.Red);
-            var model = new GeometryModel3D(pointGeometry, material);
-            var modelVisual = new ModelVisual3D { Content = model };
-
-            G3D.Children.Add(modelVisual);
+        {            
             await Task.Run(() =>
             {
 
@@ -140,41 +111,6 @@ namespace DataLoggerArduino
                     Task.Delay(500).Wait();  // Dá uma pequena pausa para não sobrecarregar a CPU.
                 }
             });
-        }
-
-
-        private void Generate3DGraph()
-        {
-            // Depois de deserializar seu ponto
-            var pointGeometry = new MeshGeometry3D();
-            // Adicione o ponto ao pointGeometry aqui
-            // (Você provavelmente vai querer representar o ponto com uma esfera ou outro volume para ser visível)
-            pointGeometry.Positions.Add(new Point3D(0, 0, 0));
-            pointGeometry.Positions.Add(new Point3D(1, 0, 0));
-            pointGeometry.Positions.Add(new Point3D(0, 1, 0));
-            pointGeometry.Positions.Add(new Point3D(0, 0, 1));
-
-            pointGeometry.TriangleIndices.Add(0);
-            pointGeometry.TriangleIndices.Add(1);
-            pointGeometry.TriangleIndices.Add(2);
-
-            pointGeometry.TriangleIndices.Add(0);
-            pointGeometry.TriangleIndices.Add(1);
-            pointGeometry.TriangleIndices.Add(3);
-
-            pointGeometry.TriangleIndices.Add(0);
-            pointGeometry.TriangleIndices.Add(2);
-            pointGeometry.TriangleIndices.Add(3);
-
-            pointGeometry.TriangleIndices.Add(1);
-            pointGeometry.TriangleIndices.Add(2);
-            pointGeometry.TriangleIndices.Add(3);
-
-            var material = new DiffuseMaterial(Brushes.Red);
-            var model = new GeometryModel3D(pointGeometry, material);
-            var modelVisual = new ModelVisual3D { Content = model };
-
-            G3D.Children.Add(modelVisual);
-        }
+        }       
     }
 }
