@@ -9,6 +9,9 @@ using System;
 using System.IO.Ports;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Media.Media3D;
+using System.Windows.Media;
+using DataLoggerArduino.Presentation;
 
 namespace DataLoggerArduino
 {
@@ -18,11 +21,13 @@ namespace DataLoggerArduino
         public static string selectedDevice = string.Empty;
         public static string selectedBaudRate = string.Empty;
         public static SerialPort serialPort = null;
+        public static Graph3D graph3D = new Graph3D();
         public MainWindow()
         {
             _ArduinoDevicesConnected = SerialCommunications.AutodetectArduinoPort();
             InitializeComponent();
-            DeviceModelsPorts.ItemsSource = Devices();           
+            DeviceModelsPorts.ItemsSource = Devices();
+            graph3D.Show();
         }
 
         private IEnumerable<string> Devices()
@@ -83,14 +88,45 @@ namespace DataLoggerArduino
             BaudRates.IsEnabled = false;
             ConnectDevice.Content = "Conectado";
             ConnectDevice.IsEnabled = false;
-            Monitorar.IsEnabled = true;
+            Monitorar.IsEnabled = true;            
         }
               
 
         private async void Monitor(object sender, RoutedEventArgs e)
         {
+            var pointGeometry = new MeshGeometry3D();
+            // Adicione o ponto ao pointGeometry aqui
+            // (Você provavelmente vai querer representar o ponto com uma esfera ou outro volume para ser visível)
+            pointGeometry.Positions.Add(new Point3D(0, 0, 0));
+            pointGeometry.Positions.Add(new Point3D(1, 0, 0));
+            pointGeometry.Positions.Add(new Point3D(0, 1, 0));
+            pointGeometry.Positions.Add(new Point3D(0, 0, 1));
+
+            pointGeometry.TriangleIndices.Add(0);
+            pointGeometry.TriangleIndices.Add(1);
+            pointGeometry.TriangleIndices.Add(2);
+
+            pointGeometry.TriangleIndices.Add(0);
+            pointGeometry.TriangleIndices.Add(1);
+            pointGeometry.TriangleIndices.Add(3);
+
+            pointGeometry.TriangleIndices.Add(0);
+            pointGeometry.TriangleIndices.Add(2);
+            pointGeometry.TriangleIndices.Add(3);
+
+            pointGeometry.TriangleIndices.Add(1);
+            pointGeometry.TriangleIndices.Add(2);
+            pointGeometry.TriangleIndices.Add(3);
+
+            var material = new DiffuseMaterial(Brushes.Red);
+            var model = new GeometryModel3D(pointGeometry, material);
+            var modelVisual = new ModelVisual3D { Content = model };
+
+            G3D.Children.Add(modelVisual);
             await Task.Run(() =>
             {
+
+                
                 while (true)  // Cuidado com loops infinitos, pode ser uma boa ideia adicionar uma condição de saída.
                 {
                     string input = ReadIncomeDataDevice(serialPort);
@@ -104,6 +140,41 @@ namespace DataLoggerArduino
                     Task.Delay(500).Wait();  // Dá uma pequena pausa para não sobrecarregar a CPU.
                 }
             });
+        }
+
+
+        private void Generate3DGraph()
+        {
+            // Depois de deserializar seu ponto
+            var pointGeometry = new MeshGeometry3D();
+            // Adicione o ponto ao pointGeometry aqui
+            // (Você provavelmente vai querer representar o ponto com uma esfera ou outro volume para ser visível)
+            pointGeometry.Positions.Add(new Point3D(0, 0, 0));
+            pointGeometry.Positions.Add(new Point3D(1, 0, 0));
+            pointGeometry.Positions.Add(new Point3D(0, 1, 0));
+            pointGeometry.Positions.Add(new Point3D(0, 0, 1));
+
+            pointGeometry.TriangleIndices.Add(0);
+            pointGeometry.TriangleIndices.Add(1);
+            pointGeometry.TriangleIndices.Add(2);
+
+            pointGeometry.TriangleIndices.Add(0);
+            pointGeometry.TriangleIndices.Add(1);
+            pointGeometry.TriangleIndices.Add(3);
+
+            pointGeometry.TriangleIndices.Add(0);
+            pointGeometry.TriangleIndices.Add(2);
+            pointGeometry.TriangleIndices.Add(3);
+
+            pointGeometry.TriangleIndices.Add(1);
+            pointGeometry.TriangleIndices.Add(2);
+            pointGeometry.TriangleIndices.Add(3);
+
+            var material = new DiffuseMaterial(Brushes.Red);
+            var model = new GeometryModel3D(pointGeometry, material);
+            var modelVisual = new ModelVisual3D { Content = model };
+
+            G3D.Children.Add(modelVisual);
         }
     }
 }
