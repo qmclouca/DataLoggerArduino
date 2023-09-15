@@ -13,9 +13,29 @@
         <Label Content="Velocidade (bps): "  HorizontalAlignment="Left" Margin="330,12,0,0" VerticalAlignment="Top"/>
         <ComboBox x:Name="BaudRates" SelectionChanged="SaveConnectionParameters" HorizontalAlignment="Left" Margin="433,16,0,0" VerticalAlignment="Top" Width="139"/>
         <Button x:Name="ConnectDevice" IsEnabled="True" Click="OnClickConnectDevice" Content="Conectar" HorizontalAlignment="Left" Margin="577,18,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.311,-0.098" Width="76"/>
-        <TextBlock  HorizontalAlignment="Center" Margin="0,58,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="306" Width="780"/>
         <Button x:Name="Monitorar" IsEnabled="False" Click="Monitor" Content="Monitorar" HorizontalAlignment="Left" Margin="51,369,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="IncomeData" HorizontalAlignment="Left" Margin="80,104,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="710" Height="223"/>
+        <TextBox x:Name="IncomeData" HorizontalAlignment="Left" Margin="10,69,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="159" Height="278"/>
+        <Rectangle Fill="Transparent" Margin="196,69,32,87"/>
+        <Viewport3D x:Name="G3D" Margin="196,69,32,87" >
+            <!-- Câmera -->
+            <Viewport3D.Camera>
+                <PerspectiveCamera Position="0,0,-5" LookDirection="0,0,5" UpDirection="0,-1,0"/>
+            </Viewport3D.Camera>
+
+            <!-- Luz -->
+            <ModelVisual3D>
+                <ModelVisual3D.Content>
+                    <AmbientLight Color="White"  />
+                </ModelVisual3D.Content>
+            </ModelVisual3D>
+            <ModelVisual3D>
+                <ModelVisual3D.Content>
+                    <DirectionalLight Color="White" Direction="0,-1,-1" />
+                </ModelVisual3D.Content>
+            </ModelVisual3D>
+            <!-- Ponto (representado por uma esfera pequena) -->
+            <!-- Você pode adicionar pontos programaticamente ou usar uma biblioteca externa para ajudar a criar formas 3D, como a Helix Toolkit. -->
+        </Viewport3D>
 
     </Grid>
 </Window>

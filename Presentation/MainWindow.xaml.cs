@@ -9,6 +9,9 @@ using System;
 using System.IO.Ports;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Media.Media3D;
+using System.Windows.Media;
+using DataLoggerArduino.Presentation;
 
 namespace DataLoggerArduino
 {
@@ -18,11 +21,13 @@ namespace DataLoggerArduino
         public static string selectedDevice = string.Empty;
         public static string selectedBaudRate = string.Empty;
         public static SerialPort serialPort = null;
+        public static Graph3D graph3D = new Graph3D();
         public MainWindow()
         {
             _ArduinoDevicesConnected = SerialCommunications.AutodetectArduinoPort();
             InitializeComponent();
-            DeviceModelsPorts.ItemsSource = Devices();           
+            DeviceModelsPorts.ItemsSource = Devices();
+            graph3D.Show();
         }
 
         private IEnumerable<string> Devices()
@@ -83,14 +88,16 @@ namespace DataLoggerArduino
             BaudRates.IsEnabled = false;
             ConnectDevice.Content = "Conectado";
             ConnectDevice.IsEnabled = false;
-            Monitorar.IsEnabled = true;
+            Monitorar.IsEnabled = true;            
         }
               
 
         private async void Monitor(object sender, RoutedEventArgs e)
-        {
+        {            
             await Task.Run(() =>
             {
+
+                
                 while (true)  // Cuidado com loops infinitos, pode ser uma boa ideia adicionar uma condição de saída.
                 {
                     string input = ReadIncomeDataDevice(serialPort);
@@ -104,6 +111,6 @@ namespace DataLoggerArduino
                     Task.Delay(500).Wait();  // Dá uma pequena pausa para não sobrecarregar a CPU.
                 }
             });
-        }
+        }       
     }
 }
