@@ -13,6 +13,9 @@
 
         <!-- Material para o eixo Z (azul) -->
         <DiffuseMaterial x:Key="ZAxisMaterial" Brush="Blue"/>
+        <!-- Material para pontos -->
+        <DiffuseMaterial x:Key="PointMaterial" Brush="White"/>
+
     </Window.Resources>
     <Grid>
         <helix:HelixViewport3D x:Name="ViewPort3D" Background="Black">
@@ -29,6 +32,18 @@
             <ModelVisual3D>
                 <ModelVisual3D.Content>
                     <DirectionalLight Color="White" Direction="-0.3,-0.4,-0.5"/>
+                </ModelVisual3D.Content>
+            </ModelVisual3D>
+            <ModelVisual3D>
+                <ModelVisual3D.Content>
+                    <GeometryModel3D x:Name="PointGeometryModel3D">
+                        <GeometryModel3D.Geometry>
+                            <MeshGeometry3D x:Name="PointMeshGeometry3D" />
+                        </GeometryModel3D.Geometry>
+                        <GeometryModel3D.Material>
+                            <StaticResource ResourceKey="PointMaterial"/>
+                        </GeometryModel3D.Material>
+                    </GeometryModel3D>
                 </ModelVisual3D.Content>
             </ModelVisual3D>
             <!-- Eixos (vou mostrar como adicioná-los na próxima etapa) -->

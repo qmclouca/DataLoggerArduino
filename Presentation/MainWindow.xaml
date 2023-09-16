@@ -36,6 +36,10 @@
             <!-- Ponto (representado por uma esfera pequena) -->
             <!-- Você pode adicionar pontos programaticamente ou usar uma biblioteca externa para ajudar a criar formas 3D, como a Helix Toolkit. -->
         </Viewport3D>
+        <Button Content="Zerar coordenadas" Click="OnClickResetCoordinates" HorizontalAlignment="Left" Margin="146,369,0,0" VerticalAlignment="Top"/>
+        <Button Content="Reiniciar arduino" Click="OnClickResetArduino" HorizontalAlignment="Left" Margin="266,369,0,0" VerticalAlignment="Top"/>
+        <Button Content="+" Click="IncreaseReadRate" HorizontalAlignment="Left" Margin="169,404,0,0" VerticalAlignment="Top" Width="14"/>
+        <Button Content="-" Click="DecreaseReadRate" HorizontalAlignment="Left" Margin="193,404,0,0" VerticalAlignment="Top" Width="14"/>
 
     </Grid>
 </Window>

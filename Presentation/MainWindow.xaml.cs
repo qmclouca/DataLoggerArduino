@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 using System.Windows.Media.Media3D;
 using System.Windows.Media;
 using DataLoggerArduino.Presentation;
+using System.Text.Json.Nodes;
+using Newtonsoft.Json;
+using HelixToolkit.Wpf.SharpDX;
 
 namespace DataLoggerArduino
 {
@@ -106,11 +109,48 @@ namespace DataLoggerArduino
                         this.Dispatcher.Invoke(() =>
                         {
                             IncomeData.Text = IncomeData.Text + "\n" + input;  // Use \n ao invés de /n para nova linha
+                            if (input != null)
+                            {
+                                try
+                                {
+                                    Point3DCartesian point = JsonConvert.DeserializeObject<Point3DCartesian>(input);
+                                    if (point != null && point.X != null && point.Y != null && point.Z != null)
+                                    {
+                                        graph3D.PointMeshGeometry3D.Positions.Add(new Point3D(point.X, point.Y, point.Z));
+                                        graph3D.PointMeshGeometry3D.Positions.Add(new Point3D(10, 10, 10));
+                                    }
+                                    else throw new Exception();
+                                }
+                                catch (Exception)
+                                {
+                                       
+                                }                                
+                            }
                         });
                     }   
                     Task.Delay(500).Wait();  // Dá uma pequena pausa para não sobrecarregar a CPU.
                 }
             });
-        }       
+        }
+
+        private void OnClickResetCoordinates(object sender, RoutedEventArgs e)
+        {
+            SerialCommunications.SendData(serialPort, "Z");
+        }
+
+        private void OnClickResetArduino(object sender, RoutedEventArgs e)
+        {
+            SerialCommunications.SendData(serialPort, "R");
+        }
+
+        private void IncreaseReadRate(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void DecreaseReadRate(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
