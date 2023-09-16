@@ -89,7 +89,7 @@ namespace DataLoggerArduino.Infrastructure.Services
                 MessageBox.Show("Nenhum dispositivo de aquisição de dados localizado no sistema.", "Detecção de dispositivos", MessageBoxButton.OK);
             }
             return arduinoDevices;
-        }
+        }      
 
         public static string ReadData(SerialPort serialPort)
         {
@@ -101,5 +101,13 @@ namespace DataLoggerArduino.Infrastructure.Services
             return string.Empty;
             
         }
+
+        public static void SendData(SerialPort serialPort, string data)
+        {
+            if(serialPort != null && serialPort.IsOpen && serialPort.BytesToWrite == 0)
+            {
+                serialPort.WriteLine(data);
+            }
+        }       
     }
 }
