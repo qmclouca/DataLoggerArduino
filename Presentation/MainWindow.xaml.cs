@@ -1,20 +1,19 @@
 ﻿using DataLoggerArduino.Domain.Entities;
 using DataLoggerArduino.Domain.Enumerables;
 using DataLoggerArduino.Infrastructure.Services;
-using System.Windows.Controls;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows;
+using DataLoggerArduino.Presentation;
+using HelixToolkit.Wpf;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO.Ports;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Windows.Media.Media3D;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
-using DataLoggerArduino.Presentation;
-using System.Text.Json.Nodes;
-using Newtonsoft.Json;
-using HelixToolkit.Wpf;
+using System.Windows.Media.Media3D;
 
 namespace DataLoggerArduino
 {
@@ -119,7 +118,7 @@ namespace DataLoggerArduino
                                         var sphere = new SphereVisual3D
                                         {
                                             Center = new Point3D(point.X, point.Y, point.Z),
-                                            Radius = 3, // Ajuste o raio conforme necessário
+                                            Radius = 0.5, // Ajuste o raio conforme necessário
                                             Fill = Brushes.White // A cor da esfera
                                         };
                                         graph3D.ViewPort3D.Children.Add(sphere);
