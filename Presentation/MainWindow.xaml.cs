@@ -6,8 +6,10 @@ using HelixToolkit.Wpf;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.IO.Ports;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
@@ -24,6 +26,7 @@ namespace DataLoggerArduino
         public static string selectedBaudRate = string.Empty;
         public static SerialPort serialPort = null;
         public static Graph3D graph3D = new Graph3D();
+        public static StringBuilder data = new StringBuilder();
         public MainWindow()
         {
             _ArduinoDevicesConnected = SerialCommunications.AutodetectArduinoPort();
@@ -108,6 +111,7 @@ namespace DataLoggerArduino
                         this.Dispatcher.Invoke(() =>
                         {
                             IncomeData.Text = IncomeData.Text + "\n" + input;  // Use \n ao invés de /n para nova linha
+                            data.AppendLine(input);
                             if (input != null)
                             {
                                 try
@@ -129,11 +133,9 @@ namespace DataLoggerArduino
                                 {
                                        
                                 }                                
-                            }
-                           
+                            }                           
                         });
                     }
-                    
                     Task.Delay(500).Wait();  // Dá uma pequena pausa para não sobrecarregar a CPU.
                 }
             });
@@ -159,6 +161,8 @@ namespace DataLoggerArduino
             }
         }
 
+
+
         private void IncreaseReadRate(object sender, RoutedEventArgs e)
         {
             SerialCommunications.SendData(serialPort, "+");
@@ -172,6 +176,30 @@ namespace DataLoggerArduino
         private void IncomeDataChanged(object sender, TextChangedEventArgs e)
         {
             IncomeData.ScrollToEnd();
+        }
+
+        private void SaveDataFile(object sender, RoutedEventArgs e)
+        {
+            string pathToSaveCsv = GenerateUniqueFileName();
+            File.WriteAllText(GenerateUniqueFileName(), data.ToString());
+        }
+
+        private string GenerateUniqueFileName()
+        {
+            string basePath = AppDomain.CurrentDomain.BaseDirectory;  // Diretório do aplicativo, você pode ajustar isso conforme necessário.
+            string datePart = DateTime.Now.ToString("ddMMyyyy");
+            int counter = 1;
+
+            string fullFileName = "";
+
+            do
+            {
+                fullFileName = Path.Combine(basePath, $"ArduinoLogger_{datePart}_{counter}.csv");
+                counter++;
+            }
+            while (File.Exists(fullFileName));
+
+            return fullFileName;
         }
     }
 }

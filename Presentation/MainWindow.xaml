@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DataLoggerArduino"
         mc:Ignorable="d"
-        Title="Arduino Data Logger" Height="450" Width="800"
+        Title="Arduino Data Logger" ResizeMode="NoResize" Height="450" Width="800"
         >
     <Grid>
         <Label Content="Dispositivo: " HorizontalAlignment="Left" Margin="0,12,0,0" VerticalAlignment="Top"/>
@@ -13,33 +13,14 @@
         <Label Content="Velocidade (bps): "  HorizontalAlignment="Left" Margin="330,12,0,0" VerticalAlignment="Top"/>
         <ComboBox x:Name="BaudRates" SelectionChanged="SaveConnectionParameters" HorizontalAlignment="Left" Margin="433,16,0,0" VerticalAlignment="Top" Width="139"/>
         <Button x:Name="ConnectDevice" IsEnabled="True" Click="OnClickConnectDevice" Content="Conectar" HorizontalAlignment="Left" Margin="577,18,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.311,-0.098" Width="76"/>
-        <Button x:Name="Monitorar" IsEnabled="False" Click="Monitor" Content="Monitorar" HorizontalAlignment="Left" Margin="51,369,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="IncomeData" VerticalScrollBarVisibility="Auto" TextChanged="IncomeDataChanged" HorizontalAlignment="Left" Margin="10,69,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="181" Height="278"/>
-        <Rectangle Fill="Transparent" Margin="196,69,32,87"/>
-        <Viewport3D x:Name="G3D" Margin="196,69,32,87" >
-            <!-- Câmera -->
-            <Viewport3D.Camera>
-                <PerspectiveCamera Position="0,0,-5" LookDirection="0,0,5" UpDirection="0,-1,0"/>
-            </Viewport3D.Camera>
-
-            <!-- Luz -->
-            <ModelVisual3D>
-                <ModelVisual3D.Content>
-                    <AmbientLight Color="White"  />
-                </ModelVisual3D.Content>
-            </ModelVisual3D>
-            <ModelVisual3D>
-                <ModelVisual3D.Content>
-                    <DirectionalLight Color="White" Direction="0,-1,-1" />
-                </ModelVisual3D.Content>
-            </ModelVisual3D>
-            <!-- Ponto (representado por uma esfera pequena) -->
-            <!-- Você pode adicionar pontos programaticamente ou usar uma biblioteca externa para ajudar a criar formas 3D, como a Helix Toolkit. -->
-        </Viewport3D>
-        <Button Content="Zerar coordenadas" Click="OnClickResetCoordinates" HorizontalAlignment="Left" Margin="146,369,0,0" VerticalAlignment="Top"/>
-        <Button Content="Reiniciar arduino" Click="OnClickResetArduino" HorizontalAlignment="Left" Margin="266,369,0,0" VerticalAlignment="Top"/>
-        <Button Content="+" Click="IncreaseReadRate" HorizontalAlignment="Left" Margin="169,404,0,0" VerticalAlignment="Top" Width="14"/>
-        <Button Content="-" Click="DecreaseReadRate" HorizontalAlignment="Left" Margin="193,404,0,0" VerticalAlignment="Top" Width="14"/>
+        <Button x:Name="Monitorar" IsEnabled="False" Click="Monitor" Content="Monitorar" HorizontalAlignment="Left" Margin="10,359,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="IncomeData" VerticalScrollBarVisibility="Auto" TextChanged="IncomeDataChanged" HorizontalAlignment="Left" Margin="10,69,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="349" Height="278"/>
+        <Button Content="Zerar coordenadas" Click="OnClickResetCoordinates" HorizontalAlignment="Left" Margin="72,359,0,0" VerticalAlignment="Top"/>
+        <Button Content="Reiniciar arduino" Click="OnClickResetArduino" HorizontalAlignment="Left" Margin="180,359,0,0" VerticalAlignment="Top"/>
+        <Label Content="Velocidade de aquisição de dados:" Margin="10,384,591,23"></Label>
+        <Button Content="+" Click="IncreaseReadRate" HorizontalAlignment="Left" Margin="209,388,0,0" VerticalAlignment="Top" Width="17" Height="23"/>
+        <Button Content="-" Click="DecreaseReadRate" HorizontalAlignment="Left" Margin="231,388,0,0" VerticalAlignment="Top" Width="17" Height="23"/>
+        <Button Content="Salvar" Click="SaveDataFile" HorizontalAlignment="Left" Margin="279,359,0,0" VerticalAlignment="Top" Width="80"/>
 
     </Grid>
 </Window>
