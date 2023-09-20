@@ -14,12 +14,11 @@
         <ComboBox x:Name="BaudRates" SelectionChanged="SaveConnectionParameters" HorizontalAlignment="Left" Margin="433,16,0,0" VerticalAlignment="Top" Width="139"/>
         <Button x:Name="ConnectDevice" IsEnabled="True" Click="OnClickConnectDevice" Content="Conectar" HorizontalAlignment="Left" Margin="577,18,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.311,-0.098" Width="76"/>
         <Button x:Name="Monitorar" IsEnabled="False" Click="Monitor" Content="Monitorar" HorizontalAlignment="Left" Margin="51,369,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="IncomeData" VerticalScrollBarVisibility="Auto" TextChanged="IncomeDataChanged" HorizontalAlignment="Left" Margin="10,69,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="181" Height="278"/>
-        
+        <TextBox x:Name="IncomeData" VerticalScrollBarVisibility="Auto" TextChanged="IncomeDataChanged" HorizontalAlignment="Left" Margin="10,69,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="181" Height="278"/>
         <Button Content="Zerar coordenadas" Click="OnClickResetCoordinates" HorizontalAlignment="Left" Margin="146,369,0,0" VerticalAlignment="Top"/>
         <Button Content="Reiniciar arduino" Click="OnClickResetArduino" HorizontalAlignment="Left" Margin="266,369,0,0" VerticalAlignment="Top"/>
-        <Button Content="+" Click="IncreaseReadRate" HorizontalAlignment="Left" Margin="169,404,0,0" VerticalAlignment="Top" Width="14"/>
-        <Button Content="-" Click="DecreaseReadRate" HorizontalAlignment="Left" Margin="193,404,0,0" VerticalAlignment="Top" Width="14"/>
-
+        <Button Content="+" Click="IncreaseReadRate" HorizontalAlignment="Left" Margin="375,369,0,0" VerticalAlignment="Top" Width="14"/>
+        <Button Content="-" Click="DecreaseReadRate" HorizontalAlignment="Left" Margin="400,369,0,0" VerticalAlignment="Top" Width="14"/>
+        <Button Content="Salvar em arquivo" Click="SaveDataFile" HorizontalAlignment="Left" Margin="51,394,0,0" VerticalAlignment="Top" Width="119"/>
     </Grid>
 </Window>
