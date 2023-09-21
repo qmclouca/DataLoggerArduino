@@ -1,10 +1,11 @@
-﻿<Window  x:Class="DataLoggerArduino.Presentation.Graph3D"
+﻿<UserControl  x:Class="DataLoggerArduino.Presentation.Graph3D"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:ht="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:helix="http://helix-toolkit.org/wpf"
-        Title="Gráfico 3D" Width="800" Height="600">
-    <Window.Resources>
+        xmlns:presentation="clr-namespace:DataLoggerArduino.Presentation"
+        Width="800" Height="600">
+    <UserControl.Resources>
         <!-- Material para o eixo X (vermelho) -->
         <DiffuseMaterial x:Key="XAxisMaterial" Brush="Red"/>
 
@@ -16,7 +17,7 @@
         <!-- Material para pontos -->
         <DiffuseMaterial x:Key="PointMaterial" Brush="White"/>
 
-    </Window.Resources>
+    </UserControl.Resources>
     <Grid>
         <helix:HelixViewport3D x:Name="ViewPort3D" Background="Black">
             <!-- Câmera -->
@@ -61,4 +62,4 @@
             <ht:PipeVisual3D Diameter="4" Point1="0,0,0" Point2="0,0,30" Material="{StaticResource ZAxisMaterial}"/>
         </helix:HelixViewport3D>
     </Grid>
-</Window>
+</UserControl>
