@@ -32,7 +32,7 @@ namespace DataLoggerArduino
             _ArduinoDevicesConnected = SerialCommunications.AutodetectArduinoPort();
             InitializeComponent();
             DeviceModelsPorts.ItemsSource = Devices();
-            graph3D.Show();
+            
         }
 
         private IEnumerable<string> Devices()
@@ -101,9 +101,7 @@ namespace DataLoggerArduino
         {            
             await Task.Run(() =>
             {
-
-                
-                while (true)  // Cuidado com loops infinitos, pode ser uma boa ideia adicionar uma condição de saída.
+                while (true)  
                 {
                     string input = ReadIncomeDataDevice(serialPort);
                     if (serialPort != null)
