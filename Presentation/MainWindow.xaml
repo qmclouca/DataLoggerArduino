@@ -21,6 +21,6 @@
         <Button Content="+" Click="IncreaseReadRate" HorizontalAlignment="Left" Margin="375,369,0,0" VerticalAlignment="Top" Width="14"/>
         <Button Content="-" Click="DecreaseReadRate" HorizontalAlignment="Left" Margin="400,369,0,0" VerticalAlignment="Top" Width="14"/>
         <Button Content="Salvar em arquivo" Click="SaveDataFile" HorizontalAlignment="Left" Margin="433,369,0,0" VerticalAlignment="Top" Width="119"/>
-        <presentation:Graph3D HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="575" Height="278" Margin="0,0,10,87"/>
+        <presentation:Graph3D x:Name="Model3D" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="575" Height="278" Margin="0,0,10,87"/>
     </Grid>    
 </Window>

@@ -24,8 +24,7 @@ namespace DataLoggerArduino
         public static List<ArduinoDevices> _ArduinoDevicesConnected = new List<ArduinoDevices>();
         public static string selectedDevice = string.Empty;
         public static string selectedBaudRate = string.Empty;
-        public static SerialPort serialPort = null;
-        public static Graph3D graph3D = new Graph3D();
+        public static SerialPort serialPort = null;        
         public static StringBuilder data = new StringBuilder();
         public MainWindow()
         {
@@ -119,10 +118,10 @@ namespace DataLoggerArduino
                                         var sphere = new SphereVisual3D
                                         {
                                             Center = new Point3D(point.X, point.Y, point.Z),
-                                            Radius = 3, 
+                                            Radius = 0.5, 
                                             Fill = Brushes.White
                                         };
-                                        graph3D.ViewPort3D.Children.Add(sphere);
+                                        Model3D.ViewPort3D.Children.Add(sphere);
                                     }
                                     else throw new Exception();
                                 }
@@ -142,9 +141,9 @@ namespace DataLoggerArduino
         {
             SerialCommunications.SendData(serialPort, "Z");
             IncomeData.Text = string.Empty;
-            foreach (var visual in graph3D.ViewPort3D.Children.OfType<SphereVisual3D>().ToList())
+            foreach (var visual in Model3D.ViewPort3D.Children.OfType<SphereVisual3D>().ToList())
             {
-                graph3D.ViewPort3D.Children.Remove(visual);
+                Model3D.ViewPort3D.Children.Remove(visual);
             }
         }
 
@@ -152,9 +151,9 @@ namespace DataLoggerArduino
         {
             SerialCommunications.SendData(serialPort, "R");
             IncomeData.Text = string.Empty; 
-            foreach (var visual in graph3D.ViewPort3D.Children.OfType<SphereVisual3D>().ToList())
+            foreach (var visual in Model3D.ViewPort3D.Children.OfType<SphereVisual3D>().ToList())
             {
-                graph3D.ViewPort3D.Children.Remove(visual);
+                Model3D.ViewPort3D.Children.Remove(visual);
             }
         }
 
