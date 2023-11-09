@@ -32,7 +32,6 @@ namespace DataLoggerArduino
             _ArduinoDevicesConnected = SerialCommunications.AutodetectArduinoPort();
             InitializeComponent();
             DeviceModelsPorts.ItemsSource = Devices();
-            
         }
 
         private IEnumerable<string> Devices()
@@ -108,7 +107,7 @@ namespace DataLoggerArduino
                     {
                         this.Dispatcher.Invoke(() =>
                         {
-                            IncomeData.Text = IncomeData.Text + "\n" + input;  // Use \n ao invés de /n para nova linha
+                            IncomeData.Text = IncomeData.Text + "\n" + input;  
                             data.AppendLine(input);
                             if (input != null)
                             {
@@ -120,8 +119,8 @@ namespace DataLoggerArduino
                                         var sphere = new SphereVisual3D
                                         {
                                             Center = new Point3D(point.X, point.Y, point.Z),
-                                            Radius = 0.5, // Ajuste o raio conforme necessário
-                                            Fill = Brushes.White // A cor da esfera
+                                            Radius = 3, 
+                                            Fill = Brushes.White
                                         };
                                         graph3D.ViewPort3D.Children.Add(sphere);
                                     }
@@ -134,7 +133,7 @@ namespace DataLoggerArduino
                             }                           
                         });
                     }
-                    Task.Delay(500).Wait();  // Dá uma pequena pausa para não sobrecarregar a CPU.
+                    Task.Delay(500);  // Dá uma pequena pausa para não sobrecarregar a CPU.
                 }
             });
         }
