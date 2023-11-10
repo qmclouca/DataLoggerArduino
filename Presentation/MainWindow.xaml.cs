@@ -112,12 +112,25 @@ namespace DataLoggerArduino
                             {
                                 try
                                 {
-                                    Point3DCartesian point = JsonConvert.DeserializeObject<Point3DCartesian>(input);
-                                    if (point != null && point.X != null && point.Y != null && point.Z != null)
+                                    input = input.Trim(new char[] { '\r', '\n' });
+
+                                    if (!string.IsNullOrEmpty(input))
                                     {
+                                        DataFromArduino data = JsonConvert.DeserializeObject<DataFromArduino>(input);
+                                        
+                                        // Convertendo para radianos
+                                        double angulo1Rad = data.angulo1 * (Math.PI / 180);
+                                        double angulo2Rad = data.angulo2 * (Math.PI / 180);
+
+                                        // Realizando a conversão de esféricas para cartesianas
+                                        double x = data.distancia * Math.Sin(angulo2Rad) * Math.Cos(angulo1Rad);
+                                        double y = data.distancia * Math.Sin(angulo2Rad) * Math.Sin(angulo1Rad);
+                                        double z = data.distancia * Math.Cos(angulo2Rad);
+
+
                                         var sphere = new SphereVisual3D
                                         {
-                                            Center = new Point3D(point.X, point.Y, point.Z),
+                                            Center = new Point3D(x, y, z),
                                             Radius = 0.5, 
                                             Fill = Brushes.White
                                         };
