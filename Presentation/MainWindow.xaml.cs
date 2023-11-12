@@ -6,6 +6,7 @@ using HelixToolkit.Wpf;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Ports;
 using System.Linq;
@@ -26,6 +27,7 @@ namespace DataLoggerArduino
         public static string selectedBaudRate = string.Empty;
         public static SerialPort serialPort = null;        
         public static StringBuilder data = new StringBuilder();
+        public static List<Point3D> points = new List<Point3D>();
         public MainWindow()
         {
             _ArduinoDevicesConnected = SerialCommunications.AutodetectArduinoPort();
@@ -93,59 +95,91 @@ namespace DataLoggerArduino
             ConnectDevice.IsEnabled = false;
             Monitorar.IsEnabled = true;            
         }
-              
+
 
         private async void Monitor(object sender, RoutedEventArgs e)
-        {            
-            await Task.Run(() =>
+        {
+            List<Point3D> points = new List<Point3D>();
+            MeshBuilder meshBuilder = new MeshBuilder(false, false);
+            Model3DGroup modelGroup = new Model3DGroup();
+
+            await Task.Run(async () =>
             {
-                while (true)  
+                while (true)
                 {
                     string input = ReadIncomeDataDevice(serialPort);
-                    if (serialPort != null)
+                    if (serialPort != null && !string.IsNullOrWhiteSpace(input))
                     {
-                        this.Dispatcher.Invoke(() =>
+                        // Limpa o input antes de processá-lo
+                        string inputCleaned = input.Trim(new char[] { '\r', '\n' });
+
+                        DataFromArduino data = null;
+                        try
                         {
-                            IncomeData.Text = IncomeData.Text + "\n" + input;  
-                            data.AppendLine(input);
-                            if (input != null)
+                            // Deserializa fora do Dispatcher para evitar operações desnecessárias na UI thread
+                            data = JsonConvert.DeserializeObject<DataFromArduino>(inputCleaned);
+                        }
+                        catch (Exception ex)
+                        {
+                            // Lida com a exceção
+                            Debug.WriteLine("Exception occurred: " + ex.Message);
+                        }
+
+                        if (data != null)
+                        {
+                            // Realizando a conversão de esféricas para cartesianas
+                            double angulo1Rad = data.angulo1 * (Math.PI / 180);
+                            double angulo2Rad = data.angulo2 * (Math.PI / 180);
+                            double x = data.distancia * Math.Sin(angulo2Rad) * Math.Cos(angulo1Rad);
+                            double y = data.distancia * Math.Sin(angulo2Rad) * Math.Sin(angulo1Rad);
+                            double z = data.distancia * Math.Cos(angulo2Rad);
+
+                            Point3D point3D = new Point3D(x, y, z);
+
+                            this.Dispatcher.Invoke(() =>
                             {
-                                try
-                                {
-                                    input = input.Trim(new char[] { '\r', '\n' });
+                                // Atualiza a UI com os dados recebidos
+                                IncomeData.AppendText(input + "\n");
+                                IncomeData.ScrollToEnd(); // Isso vai rolar o texto para o final para mostrar os dados mais recentes
 
-                                    if (!string.IsNullOrEmpty(input))
+                                points.Add(point3D);
+
+                                if (points.Count >= 10)
+                                {
+                                    meshBuilder = new MeshBuilder(false, false);
+                                    foreach (Point3D point in points)
                                     {
-                                        DataFromArduino data = JsonConvert.DeserializeObject<DataFromArduino>(input);
-                                        
-                                        // Convertendo para radianos
-                                        double angulo1Rad = data.angulo1 * (Math.PI / 180);
-                                        double angulo2Rad = data.angulo2 * (Math.PI / 180);
-
-                                        // Realizando a conversão de esféricas para cartesianas
-                                        double x = data.distancia * Math.Sin(angulo2Rad) * Math.Cos(angulo1Rad);
-                                        double y = data.distancia * Math.Sin(angulo2Rad) * Math.Sin(angulo1Rad);
-                                        double z = data.distancia * Math.Cos(angulo2Rad);
-
-
-                                        var sphere = new SphereVisual3D
-                                        {
-                                            Center = new Point3D(x, y, z),
-                                            Radius = 0.5, 
-                                            Fill = Brushes.White
-                                        };
-                                        Model3D.ViewPort3D.Children.Add(sphere);
+                                        meshBuilder.Positions.Add(point);
                                     }
-                                    else throw new Exception();
+                                    for (int i=0; i<points.Count-2; i++)
+                                    {
+                                        meshBuilder.AddTriangle(points[i], points[i + 1], points[i + 2]);
+                                    }
+                                    meshBuilder.ComputeNormalsAndTangents(MeshFaces.Default, false);
+
+                                    // Aqui vamos adicionar a lógica para construir a malha
+                                    // ...
+
+                                    var mesh = meshBuilder.ToMesh(true);
+                                    var geometryModel = new GeometryModel3D
+                                    {
+                                        Geometry = mesh,
+                                        Material = MaterialHelper.CreateMaterial(Brushes.White),
+                                        BackMaterial = MaterialHelper.CreateMaterial(Brushes.White)
+                                    };
+                                    var modelVisual3D = new ModelVisual3D
+                                    {
+                                        Content = geometryModel
+                                    };
+                                    
+                                    Model3D.ViewPort3D.Children.Add(modelVisual3D);
+
+                                    points.Clear();
                                 }
-                                catch (Exception)
-                                {
-                                       
-                                }                                
-                            }                           
-                        });
+                            });
+                        }
                     }
-                    Task.Delay(500);  // Dá uma pequena pausa para não sobrecarregar a CPU.
+                    await Task.Delay(500); // Await é importante aqui para evitar bloquear a thread
                 }
             });
         }
