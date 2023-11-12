@@ -6,21 +6,25 @@
         xmlns:local="clr-namespace:DataLoggerArduino"
         xmlns:presentation="clr-namespace:DataLoggerArduino.Presentation"
         mc:Ignorable="d"
-        Title="Arduino Data Logger" ResizeMode="NoResize" Height="450" Width="800"
+        Title="Arduino Data Logger" ResizeMode="NoResize" Height="800" Width="1200"
         >
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="577*"/>
+            <ColumnDefinition Width="223*"/>
+        </Grid.ColumnDefinitions>
         <Label Content="Dispositivo: " HorizontalAlignment="Left" Margin="0,12,0,0" VerticalAlignment="Top"/>
         <ComboBox x:Name="DeviceModelsPorts" SelectionChanged="ListBaudRatesAvailable" HorizontalAlignment="Left" Margin="74,16,0,0" VerticalAlignment="Top" Width="245"/>
         <Label Content="Velocidade (bps): "  HorizontalAlignment="Left" Margin="330,12,0,0" VerticalAlignment="Top"/>
         <ComboBox x:Name="BaudRates" SelectionChanged="SaveConnectionParameters" HorizontalAlignment="Left" Margin="433,16,0,0" VerticalAlignment="Top" Width="139"/>
-        <Button x:Name="ConnectDevice" IsEnabled="True" Click="OnClickConnectDevice" Content="Conectar" HorizontalAlignment="Left" Margin="577,18,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.311,-0.098" Width="76"/>
-        <Button x:Name="Monitorar" IsEnabled="False" Click="Monitor" Content="Monitorar" HorizontalAlignment="Left" Margin="51,369,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="IncomeData" VerticalScrollBarVisibility="Auto" TextChanged="IncomeDataChanged" HorizontalAlignment="Left" Margin="10,69,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="181" Height="278"/>
-        <Button Content="Zerar coordenadas" Click="OnClickResetCoordinates" HorizontalAlignment="Left" Margin="113,369,0,0" VerticalAlignment="Top"/>
-        <Button Content="Reiniciar arduino" Click="OnClickResetArduino" HorizontalAlignment="Left" Margin="266,369,0,0" VerticalAlignment="Top"/>
-        <Button Content="+" Click="IncreaseReadRate" HorizontalAlignment="Left" Margin="375,369,0,0" VerticalAlignment="Top" Width="14"/>
-        <Button Content="-" Click="DecreaseReadRate" HorizontalAlignment="Left" Margin="400,369,0,0" VerticalAlignment="Top" Width="14"/>
-        <Button Content="Salvar em arquivo" Click="SaveDataFile" HorizontalAlignment="Left" Margin="433,369,0,0" VerticalAlignment="Top" Width="119"/>
-        <presentation:Graph3D x:Name="Model3D" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="575" Height="278" Margin="0,0,10,87"/>
-    </Grid>    
+        <Button x:Name="ConnectDevice" IsEnabled="True" Click="OnClickConnectDevice" Content="Conectar" HorizontalAlignment="Left" Margin="577,18,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.311,-0.098" Width="76" Grid.ColumnSpan="2"/>
+        <Button x:Name="Monitorar" IsEnabled="False" Click="Monitor" Content="Monitorar" HorizontalAlignment="Left" Margin="670,18,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="IncomeData" VerticalScrollBarVisibility="Auto" TextChanged="IncomeDataChanged" HorizontalAlignment="Left" Margin="10,69,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="280" Height="649"/>
+        <Button Content="Zerar coordenadas" Click="OnClickResetCoordinates" HorizontalAlignment="Left" Margin="37,737,0,0" VerticalAlignment="Top"/>
+        <Button Content="Reiniciar arduino" Click="OnClickResetArduino" HorizontalAlignment="Left" Margin="150,737,0,0" VerticalAlignment="Top"/>
+        <Button Content="+" Click="IncreaseReadRate" HorizontalAlignment="Left" Margin="742,18,0,0" VerticalAlignment="Top" Width="14"/>
+        <Button Content="-" Click="DecreaseReadRate" HorizontalAlignment="Left" Margin="768,18,0,0" VerticalAlignment="Top" Width="14"/>
+        <Button Content="Salvar em arquivo" Click="SaveDataFile" HorizontalAlignment="Left" Margin="252,737,0,0" VerticalAlignment="Top" Width="118"/>
+        <presentation:Graph3D x:Name="Model3D" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="882" Height="649" Margin="0,0,10,66" Grid.ColumnSpan="2"/>
+    </Grid>
 </Window>

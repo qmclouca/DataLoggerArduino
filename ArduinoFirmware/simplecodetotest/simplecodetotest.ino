@@ -13,10 +13,10 @@ void loop() {
   Serial.println(jsonString);
   
   // Incrementa os ângulos
-  angulo1++;
+  angulo1=angulo1 + 5;
   if (angulo1 > 90) {
     angulo1 = 0;
-    angulo2++;
+    angulo2=angulo2 + 6;
     if (angulo2 >= 360) {
       angulo2 = 0;
     }
