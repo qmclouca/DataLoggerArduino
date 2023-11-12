@@ -126,8 +126,7 @@ namespace DataLoggerArduino
                         }
 
                         if (data != null)
-                        {
-                            // Realizando a conversão de esféricas para cartesianas
+                        {                            
                             double angulo1Rad = data.angulo1 * (Math.PI / 180);
                             double angulo2Rad = data.angulo2 * (Math.PI / 180);
                             double x = data.distancia * Math.Sin(angulo2Rad) * Math.Cos(angulo1Rad);
@@ -138,9 +137,8 @@ namespace DataLoggerArduino
 
                             this.Dispatcher.Invoke(() =>
                             {
-                                // Atualiza a UI com os dados recebidos
                                 IncomeData.AppendText(input + "\n");
-                                IncomeData.ScrollToEnd(); // Isso vai rolar o texto para o final para mostrar os dados mais recentes
+                                IncomeData.ScrollToEnd(); 
 
                                 points.Add(point3D);
 
@@ -156,10 +154,6 @@ namespace DataLoggerArduino
                                         meshBuilder.AddTriangle(points[i], points[i + 1], points[i + 2]);
                                     }
                                     meshBuilder.ComputeNormalsAndTangents(MeshFaces.Default, false);
-
-                                    // Aqui vamos adicionar a lógica para construir a malha
-                                    // ...
-
                                     var mesh = meshBuilder.ToMesh(true);
                                     var geometryModel = new GeometryModel3D
                                     {
@@ -173,13 +167,12 @@ namespace DataLoggerArduino
                                     };
                                     
                                     Model3D.ViewPort3D.Children.Add(modelVisual3D);
-
                                     points.Clear();
                                 }
                             });
                         }
                     }
-                    await Task.Delay(500); // Await é importante aqui para evitar bloquear a thread
+                    await Task.Delay(500);
                 }
             });
         }
